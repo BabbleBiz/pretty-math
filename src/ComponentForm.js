@@ -1,18 +1,18 @@
 import React from 'react'
 import axios from 'axios'
 import {Form} from 'semantic-ui-react'
-import PastEquations from './PastEquations'
+import PastExpressions from './PastExpressions'
 
 export default class ComponentForm extends React.Component {
   constructor () {
     super()
     this.state = {
-      currentEquation: '',
+      currentExpression: '',
       typeOfEvaluation: '',
-      pastEquations: []
+      pastExpressions: []
     }
     //Binding the "this" context of the handlers to the component
-    this.handleChangeEquation = this.handleChangeEquation.bind(this)
+    this.handleChangeExpression = this.handleChangeExpression.bind(this)
     this.handleChangeType = this.handleChangeType.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
   }
@@ -24,22 +24,26 @@ export default class ComponentForm extends React.Component {
     })
   }
 
-  handleChangeEquation(event, data) {
+  handleChangeExpression(event, data) {
     //On change the selector will updated the value for the equation being evaluated
-    console.log("data", data.value)
     this.setState({
-      currentEquation: data.value
+      currentExpression: data.value
     })
   }
 
   async handleSubmit () {
     //Use selector for the type of equation
-    const response = await axios.get(`https://newton.now.sh/${this.state.typeOfEvaluation}/${this.state.currentEquation}`)
-    console.log("Your data", response.data)
+    const {data} = await axios.get(`https://newton.now.sh/${this.state.typeOfEvaluation}/${this.state.currentExpression}`)
+
     //Reset state so user can enter another equation
+    const newExpressionSolved = { result: data.result, expression: data.expression, type: data.operation }
+    console.log("new expression", newExpressionSolved)
+    let allExpressions = this.state.pastExpressions
+    allExpressions.push(newExpressionSolved)
     this.setState({
-      currentEquation: '',
+      currentExpression: '',
       typeOfEvaluation: '',
+      pastExpressions: allExpressions
     })
   }
   render(){
@@ -65,12 +69,12 @@ export default class ComponentForm extends React.Component {
       <div>
       <Form>
         <Form.Group widths="equal">
-            <Form.Input fluid label="Equation" placeholder="Your equation here!" onChange={this.handleChangeEquation}/>
-          <Form.Select fluid label="Equation Type" options={options} placeholder="Evaluation Type" onChange={this.handleChangeType}/>
+            <Form.Input fluid label="Expression" placeholder="Your expression here!" onChange={this.handleChangeExpression} value={this.state.currentExpression}/>
+          <Form.Select fluid label="Evaluation Type" options={options} placeholder="Evaluation Type" onChange={this.handleChangeType} value={this.state.typeOfEvaluation}/>
         </Form.Group>
         <Form.Button type='inverted' onClick={this.handleSubmit}>Submit</Form.Button>
       </Form>
-      <PastEquations pastEquations={this.state.pastEquations}/>
+      <PastExpressions pastExpressions={this.state.pastExpressions}/>
       </div>
     )
   }
