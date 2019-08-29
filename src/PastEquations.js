@@ -9,12 +9,12 @@ export default function PastEquations (props){
       <Header>
         Your past equations:
       </Header>
-      <p>
+      <div>
         {pastEquations.length?
         pastEquations.map(equation => {
          return (<p>{equation.input} {equation.type} {equation.result}</p>)
         }): <p>You don't have any past equations</p>}
-      </p>
+      </div>
     </Container>
   )
 }

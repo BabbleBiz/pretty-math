@@ -10,9 +10,9 @@ function App() {
           Solve equations!
         </p>
       </header>
-      <body>
+      <div>
         <ComponentForm />
-      </body>
+      </div>
     </div>
   );
 }
