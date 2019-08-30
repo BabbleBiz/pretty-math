@@ -1,6 +1,6 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+## What is this?
 This app was built to allow users to enter an expression and how they want it evaluated. The app then evaluates the expression and returns the returned value. It also provides a way for users to learn more about different evaluation methods.
 
 ## Available Scripts
