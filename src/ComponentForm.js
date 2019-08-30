@@ -3,6 +3,35 @@ import axios from 'axios'
 import {Form} from 'semantic-ui-react'
 import PastExpressions from './PastExpressions'
 
+//Left this as an array so the options can easily be updated for the dropdown selector
+const options = [
+  { key: "simplify", text: "Simplify", value: "simplify", link: "https://www.jamesbrennan.org/algebra/intro%20to%20algebra/simplifying_algebraic_expression.htm"},
+  { key: "factor", text: "Factor", value: "factor", link: "https://www.shmoop.com/algebraic-expressions/expressions-equations-factoring.html" },
+  { key: "derive", text: "Derive", value: "derive", link: "https://www.quora.com/What-does-it-mean-to-derive-a-formula" },
+  { key: "integrate", text: "Integrate", value: "integrate", link: "https://www.wyzant.com/resources/lessons/math/calculus/integration" },
+  { key: "zeroes", text: "Find Zeros", value: "zeroes", link: "https://www.freemathhelp.com/forum/threads/how-do-i-find-zeros-of-an-exponential-function.90407/" },
+  { key: "tangent", text: "Find Tangent", value: "tangent", link: "https://www.wikihow.com/Find-the-Equation-of-a-Tangent-Line" },
+  { key: "area", text: "Area Under Curve", value: "area", link: "https://revisionmaths.com/advanced-level-maths-revision/pure-maths/calculus/area-under-curve" },
+  { key: "cos", text: "Cosine", value: "cos", link: "https://www.mathsisfun.com/sine-cosine-tangent.html" },
+  { key: "sin", text: "Sine", value: "sin", link: "https://www.mathsisfun.com/sine-cosine-tangent.html" },
+  { key: "tan", text: "Tangent", value: "tan", link: "https://www.mathsisfun.com/sine-cosine-tangent.html" },
+  { key: "arccos", text: "Inverse Cosine", value: "arccos", link: "https://www.mathsisfun.com/algebra/trig-inverse-sin-cos-tan.html" },
+  { key: "arcsin", text: "Inverse Sine", value: "arcsin", link: "https://www.mathsisfun.com/algebra/trig-inverse-sin-cos-tan.html" },
+  { key: "arctan", text: "Inverse Tangent", value: "arctan", link: "https://www.mathsisfun.com/algebra/trig-inverse-sin-cos-tan.html" },
+  { key: "abs", text: "Absolute Value", value: "abs", link: "https://www.wikihow.com/Find-the-Absolute-Value-of-a-Number" },
+  { key: "log", text: "Logarithm", value: "log", link: "http://www.mclph.umn.edu/mathrefresh/logs.html" }
+]
+//This function takes the short hand name of the function that is stored on state and returns the full name of the type of
+//expression executed
+function rename (shortHandType){
+  for (let i = 0; i < options.length; i++){
+    if (options[i].key === shortHandType){
+      return options[i].text
+    }
+  }
+}
+
+
 export default class ComponentForm extends React.Component {
   constructor () {
     super()
@@ -35,11 +64,13 @@ export default class ComponentForm extends React.Component {
     //Use selector for the type of equation
     const {data} = await axios.get(`https://newton.now.sh/${this.state.typeOfEvaluation}/${this.state.currentExpression}`)
 
-    //Reset state so user can enter another equation
-    const newExpressionSolved = { result: data.result, expression: data.expression, type: data.operation }
-    console.log("new expression", newExpressionSolved)
+    //Save the full name of the type of action instead of the short-hand version
+    let fullTypeName = rename(this.state.typeOfEvaluation)
+    const newExpressionSolved = { result: data.result, expression: data.expression, type: fullTypeName }
+
     let allExpressions = this.state.pastExpressions
     allExpressions.push(newExpressionSolved)
+    //Reset state so user can enter another equation
     this.setState({
       currentExpression: '',
       typeOfEvaluation: '',
@@ -47,24 +78,6 @@ export default class ComponentForm extends React.Component {
     })
   }
   render(){
-    //Left this as an array so the options can easily be updated for the dropdown selector
-    const options = [
-      {key: "simplify", text: "Simplify", value: "simplify"},
-      { key: "factor", text: "Factor", value: "factor" },
-      { key: "derive", text: "Derive", value: "derive" },
-      { key: "integrate", text: "Integrate", value: "integrate" },
-      { key: "zeroes", text: "Find Zeros", value: "zeroes" },
-      { key: "tangent", text: "Find Tangent", value: "tangent" },
-      { key: "area", text: "Area Under Curve", value: "area" },
-      { key: "cos", text: "Cosine", value: "cos" },
-      { key: "sin", text: "Sine", value: "sin" },
-      { key: "tan", text: "Sine", value: "tan" },
-      { key: "arccos", text: "Inverse Cosine", value: "arccos" },
-      { key: "arcsin", text: "Inverse Sine", value: "arcsin" },
-      { key: "arctan", text: "Inverse Tangent", value: "arctan" },
-      { key: "abs", text: "Absolute Value", value: "abs" },
-      { key: "log", text: "Logarithm", value: "log" }
-    ]
     return (
       <div>
       <Form>
@@ -74,7 +87,7 @@ export default class ComponentForm extends React.Component {
         </Form.Group>
         <Form.Button type='inverted' onClick={this.handleSubmit}>Submit</Form.Button>
       </Form>
-      <PastExpressions pastExpressions={this.state.pastExpressions}/>
+      <PastExpressions pastExpressions={this.state.pastExpressions} options={options}/>
       </div>
     )
   }
