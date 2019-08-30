@@ -19,7 +19,7 @@ export default function PastExpressions (props){
   return (
     <Container fluid>
       <Header>
-        Your past equations:
+        Your past expressions:
       </Header>
       <div>
         {pastExpressions.length ?
