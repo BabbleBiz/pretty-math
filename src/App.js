@@ -26,7 +26,7 @@ function App() {
                     Input "-1" and select Absolute value, you will get the absolute value of the -1 which is 1.
                   </List.Item>
                   <List.Item>
-                    Input x^2+2x and select Find Zeroes, it will return when that graph hits the y axis, which is [-2, 0].
+                    Input x^2+2x and select Find Zeroes, it will return when that graph hits the x axis, which is [-2, 0].
                   </List.Item>
                 </List>
               </p>
