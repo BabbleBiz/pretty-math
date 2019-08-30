@@ -11,7 +11,7 @@ function App() {
           Solve equations!
         </p>
         <h3>
-          Use this interface to solve anything from numerical calculation to symbolic math parsing.
+          Use this interface to solve anything from numerical calculation to symbolic math parsing
         </h3>
         <Modal trigger={<Button id="modalbutton">Help! I'm still confused</Button>} >
           <Modal.Header>How does this work?</Modal.Header>

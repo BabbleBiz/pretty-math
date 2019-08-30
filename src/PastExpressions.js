@@ -4,7 +4,7 @@ import { Container, Header } from 'semantic-ui-react'
 
 export default function PastExpressions (props){
   //grab the props sent down from the parent component
-  let pastExpressions = props.pastExpressions
+  let pastExpressions = props.pastExpressions;
   //Helper function that takes an evaluation method and returns a link to more info on that type
   //of evaluation
   function typeToLink (typeOfEvaluation){
@@ -12,7 +12,7 @@ export default function PastExpressions (props){
     for (let i = 0; i < props.options.length; i++){
       console.log("props options i", (typeOfEvaluation))
       if (props.options[i].text === typeOfEvaluation){
-        return props.options[i].link
+        return props.options[i].link;
       }
     }
   }

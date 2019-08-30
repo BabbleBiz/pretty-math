@@ -20,7 +20,7 @@ const options = [
   { key: "arctan", text: "Inverse Tangent", value: "arctan", link: "https://www.mathsisfun.com/algebra/trig-inverse-sin-cos-tan.html" },
   { key: "abs", text: "Absolute Value", value: "abs", link: "https://www.wikihow.com/Find-the-Absolute-Value-of-a-Number" },
   { key: "log", text: "Logarithm", value: "log", link: "http://www.mclph.umn.edu/mathrefresh/logs.html" }
-]
+];
 
 
 export default class ComponentForm extends React.Component {
@@ -32,49 +32,49 @@ export default class ComponentForm extends React.Component {
       pastExpressions: []
     }
     //Binding the "this" context of the handlers to the component
-    this.handleChangeExpression = this.handleChangeExpression.bind(this)
-    this.handleChangeType = this.handleChangeType.bind(this)
-    this.handleSubmit = this.handleSubmit.bind(this)
+    this.handleChangeExpression = this.handleChangeExpression.bind(this);
+    this.handleChangeType = this.handleChangeType.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleChangeType(event, data){
     //On change the selector will updated the value for the type of evaluation being used
     this.setState({
       typeOfEvaluation: data.value
-    })
+    });
   }
 
   handleChangeExpression(event, data) {
     //On change the selector will updated the value for the equation being evaluated
     this.setState({
       currentExpression: data.value
-    })
+    });
   }
 
   async handleSubmit () {
     //Use selector for the type of equation
-    const {data} = await axios.get(`https://newton.now.sh/${this.state.typeOfEvaluation}/${this.state.currentExpression}`)
+    const {data} = await axios.get(`https://newton.now.sh/${this.state.typeOfEvaluation}/${this.state.currentExpression}`);
     //This function takes the short hand name of the function that is stored on state and returns the
     //full name of the type of expression executed
     function rename(shortHandType) {
       for (let i = 0; i < options.length; i++) {
         if (options[i].key === shortHandType) {
-          return options[i].text
+          return options[i].text;
         }
-      }
+      };
     }
     //Save the full name of the type of action instead of the short-hand version
-    let fullTypeName = rename(this.state.typeOfEvaluation)
-    const newExpressionSolved = { result: data.result, expression: data.expression, type: fullTypeName }
+    let fullTypeName = rename(this.state.typeOfEvaluation);
+    const newExpressionSolved = { result: data.result, expression: data.expression, type: fullTypeName };
 
-    let allExpressions = this.state.pastExpressions
-    allExpressions.push(newExpressionSolved)
+    let allExpressions = this.state.pastExpressions;
+    allExpressions.push(newExpressionSolved);
     //Reset state so user can enter another equation
     this.setState({
       currentExpression: '',
       typeOfEvaluation: '',
       pastExpressions: allExpressions
-    })
+    });
   }
 
   render(){
