@@ -9,7 +9,7 @@ const options = [
   { key: "factor", text: "Factor", value: "factor", link: "https://www.shmoop.com/algebraic-expressions/expressions-equations-factoring.html" },
   { key: "derive", text: "Derive", value: "derive", link: "https://www.quora.com/What-does-it-mean-to-derive-a-formula" },
   { key: "integrate", text: "Integrate", value: "integrate", link: "https://www.wyzant.com/resources/lessons/math/calculus/integration" },
-  { key: "zeroes", text: "Find Zeros", value: "zeroes", link: "https://www.freemathhelp.com/forum/threads/how-do-i-find-zeros-of-an-exponential-function.90407/" },
+  { key: "zeroes", text: "Find Zeros", value: "zeroes", link: "https://courses.lumenlearning.com/ivytech-collegealgebra/chapter/find-zeros-of-a-polynomial-function/" },
   { key: "tangent", text: "Find Tangent", value: "tangent", link: "https://www.wikihow.com/Find-the-Equation-of-a-Tangent-Line" },
   { key: "area", text: "Area Under Curve", value: "area", link: "https://revisionmaths.com/advanced-level-maths-revision/pure-maths/calculus/area-under-curve" },
   { key: "cos", text: "Cosine", value: "cos", link: "https://www.mathsisfun.com/sine-cosine-tangent.html" },
@@ -21,15 +21,6 @@ const options = [
   { key: "abs", text: "Absolute Value", value: "abs", link: "https://www.wikihow.com/Find-the-Absolute-Value-of-a-Number" },
   { key: "log", text: "Logarithm", value: "log", link: "http://www.mclph.umn.edu/mathrefresh/logs.html" }
 ]
-//This function takes the short hand name of the function that is stored on state and returns the full name of the type of
-//expression executed
-function rename (shortHandType){
-  for (let i = 0; i < options.length; i++){
-    if (options[i].key === shortHandType){
-      return options[i].text
-    }
-  }
-}
 
 
 export default class ComponentForm extends React.Component {
@@ -63,7 +54,15 @@ export default class ComponentForm extends React.Component {
   async handleSubmit () {
     //Use selector for the type of equation
     const {data} = await axios.get(`https://newton.now.sh/${this.state.typeOfEvaluation}/${this.state.currentExpression}`)
-
+    //This function takes the short hand name of the function that is stored on state and returns the
+    //full name of the type of expression executed
+    function rename(shortHandType) {
+      for (let i = 0; i < options.length; i++) {
+        if (options[i].key === shortHandType) {
+          return options[i].text
+        }
+      }
+    }
     //Save the full name of the type of action instead of the short-hand version
     let fullTypeName = rename(this.state.typeOfEvaluation)
     const newExpressionSolved = { result: data.result, expression: data.expression, type: fullTypeName }
@@ -77,10 +76,11 @@ export default class ComponentForm extends React.Component {
       pastExpressions: allExpressions
     })
   }
+
   render(){
     return (
       <div>
-      <Form>
+      <Form id="form">
         <Form.Group widths="equal">
             <Form.Input fluid label="Expression" placeholder="Your expression here!" onChange={this.handleChangeExpression} value={this.state.currentExpression}/>
           <Form.Select fluid label="Evaluation Type" options={options} placeholder="Evaluation Type" onChange={this.handleChangeType} value={this.state.typeOfEvaluation}/>

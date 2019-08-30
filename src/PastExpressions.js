@@ -28,9 +28,8 @@ export default function PastExpressions (props){
             console.log("link", link)
             return (
               <p key={index}>You asked us to find the {expression.type} of {expression.expression}. It was   {expression.result}. Confused how we got that? Learn more about {expression.type} <a href={link}>here!</a> </p>
-
               )
-        }): <p>You don't have any past equations</p>}
+        }): <p>You don't have any past expressions</p>}
       </div>
     </Container>
   )
